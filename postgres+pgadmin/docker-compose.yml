@@ -1,0 +1,48 @@
+
+# Use postgres/postgres user/password credentials
+# server db 
+# username postgres
+# password postgres
+version: '3.1'
+
+services:
+
+  db:
+    image: postgres
+    restart: always
+    environment:
+        POSTGRES_DB: postgres
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: postgres
+        PGDATA: /var/lib/postgresql/data
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    networks:
+      - database-net
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 7710:8080
+    networks:
+      - database-net
+
+
+# pgadmin4:
+#     image: elestio/pgadmin
+#     environment:
+#       PGADMIN_DEFAULT_EMAIL: admin
+#       PGADMIN_DEFAULT_PASSWORD: admin
+#       PGADMIN_LISTEN_PORT: 8080
+#     volumes:
+#       - ./servers.json:/pgadmin4/servers.json
+#     networks:
+#       - database-net
+#     restart: always
+#     ports:
+#       - 7720:8080
+
+
+networks:
+  database-net:
+    driver: bridge

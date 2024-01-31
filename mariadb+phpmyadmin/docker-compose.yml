@@ -1,0 +1,47 @@
+
+# Use root/example as user/password credentials
+# server db 
+# username root
+# password example
+version: '3.1'
+
+services:
+
+  db:
+    image: mariadb
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: example
+    networks:
+      - database-net
+
+  db2:
+    image: mariadb
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: example
+    networks:
+      - database-net
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 7710:8080
+    networks:
+      - database-net
+
+
+  phpmyadmin:
+    image: phpmyadmin
+    networks:
+      - database-net
+    restart: always
+    ports:
+      - 7720:80
+    environment:
+      - PMA_ARBITRARY=1
+
+networks:
+  database-net:
+    driver: bridge
